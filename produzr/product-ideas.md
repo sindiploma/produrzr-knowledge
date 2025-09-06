@@ -1,6 +1,22 @@
 # Product Ideas
 
 - Memo Deal generator revestido de oficialidad, mencionando el BOE y Convenio.
+[Unsupported block type: synced_block]
+
+[Unsupported block type: synced_block]
+
+[Unsupported block type: synced_block]
+
+[Unsupported block type: synced_block]
+
+[Unsupported block type: synced_block]
+
+[Unsupported block type: synced_block]
+
+[Unsupported block type: synced_block]
+
+[Unsupported block type: synced_block]
+
 - 💡 Sistema de gestión telemática de trámites SS con el [sistema RED](https://www.seg-social.es/wps/portal/wss/internet/InformacionUtil/5300/1490)
 - 💡 Calculadora de Overtime
 - 💡 [Weather API](https://openweathermap.org/api)

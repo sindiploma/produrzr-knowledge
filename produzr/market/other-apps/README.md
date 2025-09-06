@@ -2,11 +2,20 @@
 
 This database contains 6 entries.
 
-## Entries
+| url | Name |
+| --- | --- |
+| https://sanalabs.com/ | Sana |
+| https://www.filmo.io/en/ | Filmo |
+| https://pixieset.com/ | Pixieset |
+| https://createapps.io/altas-seguridad-social-de... | Prisma Form |
+| https://www.pleo.io/es | Pleo |
+| https://qonto.com/es | Qonto |
 
-- [Sana](sana.md)
-- [Filmo](filmo.md)
-- [Pixieset](pixieset.md)
-- [Prisma Form](prisma-form.md)
-- [Pleo](pleo.md)
-- [Qonto](qonto.md)
+## Individual Entries
+
+- [Sana](sana.md) - https://sanalabs.com/
+- [Filmo](filmo.md) - https://www.filmo.io/en/
+- [Pixieset](pixieset.md) - https://pixieset.com/
+- [Prisma Form](prisma-form.md) - https://createapps.io/altas-seguridad-social-desde-tu-web
+- [Pleo](pleo.md) - https://www.pleo.io/es
+- [Qonto](qonto.md) - https://qonto.com/es

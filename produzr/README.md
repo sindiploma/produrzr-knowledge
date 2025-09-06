@@ -1,8 +1,10 @@
 # Produzr
 
+> ⚠️ This knowledge base covers product strategy and business planning. For technical implementation details (API docs, database schemas, development setup), see the [tech repository](https://github.com/Produzr/produzr).
+
 ## Shortcuts
 
-- **🎨 Diseño:** [https://www.figma.com/design/TY5hIt4xmYoKeE17Gzqbl9/Produzr?m=auto&t=u1Kdp8bEJZCKFrV9-1](https://www.figma.com/design/TY5hIt4xmYoKeE17Gzqbl9/Produzr?m=auto&t=u1Kdp8bEJZCKFrV9-1)
+- **🎨 Design:** [https://www.figma.com/design/TY5hIt4xmYoKeE17Gzqbl9/Produzr?m=auto&t=u1Kdp8bEJZCKFrV9-1](https://www.figma.com/design/TY5hIt4xmYoKeE17Gzqbl9/Produzr?m=auto&t=u1Kdp8bEJZCKFrV9-1)
 - **🧠 Diagrama de datos:** [https://www.tldraw.com/r/r1ITD4sP1RWgIkATZ-Ygm?d=v-2653.-1327.6833.4106.kEF5VJkluuvtrzLIASBal](https://www.tldraw.com/r/r1ITD4sP1RWgIkATZ-Ygm?d=v-2653.-1327.6833.4106.kEF5VJkluuvtrzLIASBal)
 - **📚 Drive:** [https://drive.google.com/drive/folders/1SYsww5uz5Ni5iqXYxi5u4AVQaWoQT-76?usp=drive_link](https://drive.google.com/drive/folders/1SYsww5uz5Ni5iqXYxi5u4AVQaWoQT-76?usp=drive_link)
 ## Market
@@ -635,8 +637,6 @@ Our platform is a comprehensive production management solution designed specific
 
 The platform addresses the critical challenge of production coordination by centralizing information and automating documentation workflows, enabling producers to focus on creative execution rather than administrative overhead.
 
----
-
 ## Current Product Capabilities
 
 ### Platform Architecture
@@ -690,6 +690,20 @@ The application is organized around project-based navigation, with all productio
 - `/settings/account`
 - `/settings/profile`
 - `/settings/organization`
+### User Permission Matrix
+
+**Role-Based Access Control**
+
+[Table content - 6 columns]
+
+| Role | Create Projects | Edit People | Modify Events | Generate Docs | Admin Settings |
+| Executive Producer | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Producer | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Production Manager | ❌ | ✅ | ✅ | ✅ | ❌ |
+| Coordinator | ❌ | ✅ | ✅ | ✅ | ❌ |
+| Production Assistant | ❌ | ✅ | ❌ | ✅ | ❌ |
+*Permissions align with industry hierarchy and production workflow responsibilities.*
+
 ### People Management
 
 The People module maintains a comprehensive database of all individuals connected to a production, including:
@@ -736,30 +750,26 @@ The platform automatically generates essential production documents:
 - **Crew lists**: Complete team rosters
 - **Runner assignments**: Transportation and logistics support
 - **Payroll documentation**: Administrative processing support
-### Multi-User Architecture
+### Real-Time Synchronization & Business Rules
 
-- **Production companies** can manage multiple projects within a single account
-- **Multi-seat licensing** enables collaborative access across team members
-- **Flexible user permissions** accommodate both in-house staff and freelance collaborators
-- **Project-specific invitations** for external stakeholders
----
+**Change Propagation Logic**
 
-## Future Vision & Roadmap
+When data is updated in one area, the system automatically:
 
-### Phase 1: Enhanced User Experience
+1. **Identifies Dependencies**: Scans which documents reference the changed data
+1. **Updates Documents**: Regenerates affected documents with new information
+1. **Notifies Stakeholders**: Alerts relevant team members of changes
+1. **Maintains Version History**: Preserves previous versions for reference
+**Example Workflow**: When a shooting location changes:
 
-- **Personalized dashboards** for each team member showing relevant tasks and information
-- **Smart notifications system** to ensure critical activities and deadlines aren't missed
-- **Task management integration** with automated assignment and tracking
-### Phase 2: Industry Network Effect
+- Location sheets update with new address/details
+- Transport orders recalculate routes and timing
+- Catering arrangements adjust for new venue requirements
+- Team notifications sent about location change
+**Data Integrity Rules**
 
-- **Individual profile ownership**: Transition to user-managed personal information
-- **Professional network development**: Create connections between industry professionals
-- **Streamlined collaboration**: Reduce redundant data entry across projects
-### Phase 3: AI-Powered Production Management
-
-- **Natural language query system**: Ask questions about any aspect of the production
-- **Automated updates**: Modify people, events, and locations through conversational AI
+- People must have minimum contact information before appearing in documents
+- Events cannot overlap conflictingly for same resources
 [Unsupported block type: child_database]
 
 [Unsupported block type: child_database]
@@ -819,19 +829,66 @@ Hay que ser “experto en” de cara a la venta para credibilidad. “Yo lo hago
 
 [Unsupported block type: child_page]
 
-Database
+# Tech Stack Overview for Non-Developers
 
-Strapi JS (API) 
+This document explains Produzr’s technology in simple terms.
 
-TurboRepo
+## What We Built With
 
-# Frontend
+### Frontend (What Users See)
 
-Vite
+- **Next.js** - Modern web framework that makes pages load fast
+- **React** - Library for building interactive user interfaces
+- **Mantine** - Pre-built components (buttons, forms, tables) for consistent design
+- **Tailwind CSS** - Styling system for making things look good
+### Backend (Server & Data)
 
-## React
+- **tRPC** - Ensures frontend and backend always speak the same language
+- **PostgreSQL** - Database that stores all our production data
+- **Prisma** - Tool that makes database operations safer and easier
+- **NextAuth.js** - Handles user login and security
+### Development Tools
 
-## Typescript
+- **TypeScript** - Prevents common coding mistakes before they happen
+- **Playwright** - Automated testing to catch bugs
+- **pnpm** - Fast package manager for handling code dependencies
+## Why These Choices Matter
+
+### Speed & Performance
+
+- **Next.js** makes pages load instantly
+- **PostgreSQL** handles complex production data efficiently
+- **pnpm** keeps development fast
+### Reliability
+
+- **TypeScript** catches errors before users see them
+- **tRPC** prevents frontend/backend miscommunication
+- **Playwright** tests everything automatically
+### Developer Experience
+
+- **Prisma** makes database changes safe
+- **Mantine** provides consistent, accessible components
+- **Hot reloading** shows changes instantly during development
+## Real-World Benefits
+
+**For Users:**
+- Fast, responsive interface
+- Reliable data handling
+- Consistent user experience
+
+**For Business:**
+- Fewer bugs in production
+- Faster feature development
+- Easier maintenance and updates
+
+**For Developers:**
+- Type safety prevents errors
+- Modern tooling increases productivity
+- Clear architecture makes onboarding easier
+
+## The Big Picture
+
+Our tech stack prioritizes **reliability** and **speed** - crucial for production management where mistakes are costly. Every tool was chosen to either prevent problems or solve them quickly when they occur.
 
 ## Design Systems
 
@@ -867,11 +924,236 @@ Vite
 
 [https://www.radix-ui.com/](https://www.radix-ui.com/)
 
-## Libraries
-
-[Unsupported block type: bookmark]
-
 [Unsupported block type: child_page]
+
+# Database Schema Documentation
+
+This document describes the data structure that powers Produzr’s production management platform.
+
+## Core Architecture
+
+Produzr’s database is built around three fundamental pillars:
+- **People** (Who is involved)
+- **Events** (What happens when)
+
+- **Services** (How things get done)
+
+## Data Models
+
+### Tenant (Multi-Company Support)
+
+Organizations using Produzr. Each tenant can manage multiple projects.
+
+**Fields:**
+- `name` - Company or organization name
+
+**Relationships:**
+- Has many `Projects`
+
+---
+
+### Project (Production Management)
+
+Individual productions being managed within a tenant.
+
+**Fields:**
+- `name` - Project title or code name
+
+**Relationships:**
+- Belongs to one `Tenant`
+- Has many `ProjectRoles`
+- Has many `ProjectEvents`
+- Has many `ProjectServices`
+
+---
+
+### Person (People Database)
+
+Individual people who participate in productions.
+
+**Fields:**
+- `firstName` - Given name
+- `lastName` - Family name
+
+- `email` - Contact email (unique across system)
+
+**Relationships:**
+- Can have multiple `ProjectRolePerson` assignments
+
+---
+
+### Department (Organizational Structure)
+
+Groups roles by function and type within productions.
+
+**Categories:**
+- `CREW` - Technical and creative staff
+- `CLIENT` - Agency and brand representatives
+- `TALENT` - On-screen performers
+- `SUPPLIER` - Equipment and service providers
+- `OTHER` - Miscellaneous roles
+
+**Fields:**
+- `category` - One of the above categories
+- `name` - Department name (e.g., “Camera”, “Sound”, “Wardrobe”)
+
+**Relationships:**
+- Has many `ProjectRoles`
+
+---
+
+### ProjectRole (Job Functions)
+
+Specific positions needed within a project, organized by department.
+
+**Fields:**
+- `name` - Role title (e.g., “Director of Photography”, “Gaffer”)
+
+**Relationships:**
+- Belongs to one `Department`
+- Belongs to one `Project`
+- Can have multiple `ProjectRolePerson` assignments
+- Has many `ProjectRoleNeeds` for logistics
+
+---
+
+### ProjectRolePerson (Assignment Bridge)
+
+Links people to specific roles within projects (many-to-many relationship).
+
+**Relationships:**
+- Links one `Person` to one `ProjectRole`
+
+---
+
+### ProjectRoleNeeds (Logistics Requirements)
+
+Defines what each role needs for specific dates during production.
+
+**Fields:**
+- `name` - Description of the need
+- `date` - When this is needed
+- `walkies` - Requires walkie-talkie communication
+- `catering` - Requires meal service
+- `transport` - Requires transportation
+
+**Relationships:**
+- Belongs to one `ProjectRole`
+
+---
+
+### ProjectEvent (Timeline Management)
+
+Activities and milestones within a production timeline.
+
+**Types:**
+- `SHOOT` - Filming/recording sessions
+- `PICKUP` - Additional footage capture
+- `MEAL` - Catering events
+- `ACCOMMODATION` - Lodging arrangements
+- `OTHER` - Miscellaneous events
+
+**Fields:**
+- `type` - One of the above event types
+- `name` - Event description
+
+**Relationships:**
+- Belongs to one `Project`
+- Can use one `ProjectService` for transport
+
+---
+
+### Supplier (Vendor Management)
+
+External companies providing services to productions.
+
+**Fields:**
+- `contactPersonName` - Primary contact name
+- `contactPersonEmail` - Contact email
+- `contactPersonPhone` - Phone number (optional)
+- `contactPersonRole` - Contact’s job title (optional)
+
+**Relationships:**
+- Provides many `ProjectServices`
+
+---
+
+### ProjectService (Service Management)
+
+Services provided by suppliers for projects.
+
+**Types:**
+- `TRANSPORT` - Vehicle and logistics services
+- `CATERING` - Food and beverage services
+
+**Fields:**
+- `type` - Service category
+- `name` - Service name
+- `description` - Service details (optional)
+- `price` - Service cost
+
+**Relationships:**
+- Belongs to one `Project`
+- Provided by one `Supplier` (optional)
+- Can be used by multiple `ProjectEvents`
+
+---
+
+## Key Relationships
+
+### Multi-Tenancy
+
+```plain text
+Tenant → Projects → (Roles, Events, Services)
+```
+
+### People Assignment
+
+```plain text
+Person → ProjectRolePerson → ProjectRole → Department
+```
+
+### Event Planning
+
+```plain text
+ProjectEvent → ProjectService → Supplier
+```
+
+### Logistics Coordination
+
+```plain text
+ProjectRole → ProjectRoleNeeds (walkies, catering, transport)
+```
+
+## Data Flow Examples
+
+### Adding a New Crew Member
+
+1. Create or find `Person` record
+1. Create `ProjectRole` under appropriate `Department`
+1. Link via `ProjectRolePerson`
+1. Define `ProjectRoleNeeds` for logistics
+### Planning a Shoot Day
+
+1. Create `ProjectEvent` of type `SHOOT`
+1. Assign `ProjectService` for transport if needed
+1. Check `ProjectRoleNeeds` for catering requirements
+1. Generate documentation from consolidated data
+### Managing Suppliers
+
+1. Create `Supplier` with contact information
+1. Define `ProjectServices` they provide
+1. Link services to `ProjectEvents` as needed
+1. Track costs and logistics coordination
+## System Benefits
+
+**Data Consistency:** Single source of truth for all production information
+
+**Cross-Reference Capability:** Any data point can reference others (people in events, services for roles, etc.)
+
+**Automated Documentation:** All reports generated from this centralized data
+
+**Multi-Project Scaling:** Same people and suppliers can work across different projects within a tenant
 
 # Entity Relationship Diagram
 

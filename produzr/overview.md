@@ -6,8 +6,6 @@ Our platform is a comprehensive production management solution designed specific
 
 The platform addresses the critical challenge of production coordination by centralizing information and automating documentation workflows, enabling producers to focus on creative execution rather than administrative overhead.
 
----
-
 ## Current Product Capabilities
 
 ### Platform Architecture
@@ -61,6 +59,20 @@ The application is organized around project-based navigation, with all productio
 - `/settings/account`
 - `/settings/profile`
 - `/settings/organization`
+### User Permission Matrix
+
+**Role-Based Access Control**
+
+[Table content - 6 columns]
+
+| Role | Create Projects | Edit People | Modify Events | Generate Docs | Admin Settings |
+| Executive Producer | ✅ | ✅ | ✅ | ✅ | ✅ |
+| Producer | ✅ | ✅ | ✅ | ✅ | ❌ |
+| Production Manager | ❌ | ✅ | ✅ | ✅ | ❌ |
+| Coordinator | ❌ | ✅ | ✅ | ✅ | ❌ |
+| Production Assistant | ❌ | ✅ | ❌ | ✅ | ❌ |
+*Permissions align with industry hierarchy and production workflow responsibilities.*
+
 ### People Management
 
 The People module maintains a comprehensive database of all individuals connected to a production, including:
@@ -107,27 +119,23 @@ The platform automatically generates essential production documents:
 - **Crew lists**: Complete team rosters
 - **Runner assignments**: Transportation and logistics support
 - **Payroll documentation**: Administrative processing support
-### Multi-User Architecture
+### Real-Time Synchronization & Business Rules
 
-- **Production companies** can manage multiple projects within a single account
-- **Multi-seat licensing** enables collaborative access across team members
-- **Flexible user permissions** accommodate both in-house staff and freelance collaborators
-- **Project-specific invitations** for external stakeholders
----
+**Change Propagation Logic**
 
-## Future Vision & Roadmap
+When data is updated in one area, the system automatically:
 
-### Phase 1: Enhanced User Experience
+1. **Identifies Dependencies**: Scans which documents reference the changed data
+1. **Updates Documents**: Regenerates affected documents with new information
+1. **Notifies Stakeholders**: Alerts relevant team members of changes
+1. **Maintains Version History**: Preserves previous versions for reference
+**Example Workflow**: When a shooting location changes:
 
-- **Personalized dashboards** for each team member showing relevant tasks and information
-- **Smart notifications system** to ensure critical activities and deadlines aren't missed
-- **Task management integration** with automated assignment and tracking
-### Phase 2: Industry Network Effect
+- Location sheets update with new address/details
+- Transport orders recalculate routes and timing
+- Catering arrangements adjust for new venue requirements
+- Team notifications sent about location change
+**Data Integrity Rules**
 
-- **Individual profile ownership**: Transition to user-managed personal information
-- **Professional network development**: Create connections between industry professionals
-- **Streamlined collaboration**: Reduce redundant data entry across projects
-### Phase 3: AI-Powered Production Management
-
-- **Natural language query system**: Ask questions about any aspect of the production
-- **Automated updates**: Modify people, events, and locations through conversational AI
+- People must have minimum contact information before appearing in documents
+- Events cannot overlap conflictingly for same resources

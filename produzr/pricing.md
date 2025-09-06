@@ -1,4 +1,4 @@
 # Pricing
 
-Pricing strategy, models, tiers, and competitive pricing analysis.
+> ☝ Pricing strategy, models, tiers, and competitive pricing analysis.
 
