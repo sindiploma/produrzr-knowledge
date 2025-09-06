@@ -43,48 +43,108 @@ class NotionSync:
         response.raise_for_status()
         return response.json()
     
-    def block_to_markdown(self, block: Dict) -> str:
+    def get_block_children(self, block_id: str) -> List[Dict]:
+        """Get child blocks for a block that has children"""
+        try:
+            url = f'{self.base_url}/blocks/{block_id}/children'
+            response = requests.get(url, headers=self.headers)
+            response.raise_for_status()
+            return response.json()['results']
+        except Exception as e:
+            print(f"Error getting children for block {block_id}: {e}")
+            return []
+    
+    def block_to_markdown(self, block: Dict, depth: int = 0) -> str:
         """Convert a Notion block to markdown"""
         block_type = block['type']
+        indent = "  " * depth  # For nested content
         
         if block_type == 'paragraph':
             text = self.rich_text_to_markdown(block['paragraph']['rich_text'])
-            return f"{text}\n\n"
-        
+            result = f"{indent}{text}\n\n" if text.strip() else ""
+            
         elif block_type == 'heading_1':
             text = self.rich_text_to_markdown(block['heading_1']['rich_text'])
-            return f"# {text}\n\n"
-        
+            result = f"{'#' * (1 + depth)} {text}\n\n"
+            
         elif block_type == 'heading_2':
             text = self.rich_text_to_markdown(block['heading_2']['rich_text'])
-            return f"## {text}\n\n"
-        
+            result = f"{'#' * (2 + depth)} {text}\n\n"
+            
         elif block_type == 'heading_3':
             text = self.rich_text_to_markdown(block['heading_3']['rich_text'])
-            return f"### {text}\n\n"
+            result = f"{'#' * (3 + depth)} {text}\n\n"
         
+        elif block_type == 'toggle':
+            # Handle toggle blocks (collapsible sections)
+            text = self.rich_text_to_markdown(block['toggle']['rich_text'])
+            result = f"{'#' * (3 + depth)} {text}\n\n"  # Treat toggle title as a heading
+            
         elif block_type == 'bulleted_list_item':
             text = self.rich_text_to_markdown(block['bulleted_list_item']['rich_text'])
-            return f"- {text}\n"
-        
+            result = f"{indent}- {text}\n"
+            
         elif block_type == 'numbered_list_item':
             text = self.rich_text_to_markdown(block['numbered_list_item']['rich_text'])
-            return f"1. {text}\n"
-        
+            result = f"{indent}1. {text}\n"
+            
+        elif block_type == 'to_do':
+            text = self.rich_text_to_markdown(block['to_do']['rich_text'])
+            checked = block['to_do']['checked']
+            checkbox = "[x]" if checked else "[ ]"
+            result = f"{indent}- {checkbox} {text}\n"
+            
+        elif block_type == 'quote':
+            text = self.rich_text_to_markdown(block['quote']['rich_text'])
+            result = f"{indent}> {text}\n\n"
+            
+        elif block_type == 'callout':
+            text = self.rich_text_to_markdown(block['callout']['rich_text'])
+            icon = block['callout'].get('icon', {})
+            if icon and icon.get('type') == 'emoji':
+                emoji = icon.get('emoji', '📌')
+                result = f"{indent}> {emoji} {text}\n\n"
+            else:
+                result = f"{indent}> {text}\n\n"
+            
         elif block_type == 'divider':
-            return "---\n\n"
-        
+            result = f"{indent}---\n\n"
+            
         elif block_type == 'code':
             text = self.rich_text_to_markdown(block['code']['rich_text'])
             language = block['code'].get('language', '')
-            return f"```{language}\n{text}\n```\n\n"
-        
+            result = f"{indent}```{language}\n{text}\n```\n\n"
+            
+        elif block_type == 'table':
+            result = f"{indent}[Table content - {block['table']['table_width']} columns]\n\n"
+            
+        elif block_type == 'table_row':
+            cells = block['table_row']['cells']
+            row_text = " | ".join([self.rich_text_to_markdown(cell) for cell in cells])
+            result = f"{indent}| {row_text} |\n"
+            
         else:
-            # For unsupported block types, just return the plain text if available
-            if block_type in block and 'rich_text' in block[block_type]:
-                text = self.rich_text_to_markdown(block[block_type]['rich_text'])
-                return f"{text}\n\n"
-            return ""
+            # For unsupported block types, try to extract text
+            if block_type in block and isinstance(block[block_type], dict):
+                block_data = block[block_type]
+                if 'rich_text' in block_data:
+                    text = self.rich_text_to_markdown(block_data['rich_text'])
+                    if text.strip():
+                        result = f"{indent}{text}\n\n"
+                    else:
+                        result = ""
+                else:
+                    result = f"{indent}[Unsupported block type: {block_type}]\n\n"
+            else:
+                result = ""
+        
+        # Handle nested content (children blocks)
+        if block.get('has_children', False):
+            children = self.get_block_children(block['id'])
+            for child in children:
+                result += self.block_to_markdown(child, depth + (1 if block_type in ['toggle', 'bulleted_list_item', 'numbered_list_item', 'to_do'] else 0))
+        
+        return result
     
     def rich_text_to_markdown(self, rich_text: List[Dict]) -> str:
         """Convert Notion rich text to markdown"""
@@ -271,6 +331,112 @@ class NotionSync:
         
         return 'Untitled'
     
+    def extract_property_value(self, property_data: Dict) -> str:
+        """Extract value from a Notion property based on its type"""
+        prop_type = property_data['type']
+        
+        if prop_type == 'title':
+            if property_data['title']:
+                return self.rich_text_to_markdown(property_data['title'])
+            return ""
+        
+        elif prop_type == 'rich_text':
+            if property_data['rich_text']:
+                return self.rich_text_to_markdown(property_data['rich_text'])
+            return ""
+        
+        elif prop_type == 'number':
+            return str(property_data['number']) if property_data['number'] is not None else ""
+        
+        elif prop_type == 'select':
+            return property_data['select']['name'] if property_data['select'] else ""
+        
+        elif prop_type == 'multi_select':
+            if property_data['multi_select']:
+                return ', '.join([item['name'] for item in property_data['multi_select']])
+            return ""
+        
+        elif prop_type == 'date':
+            if property_data['date']:
+                start = property_data['date']['start']
+                end = property_data['date'].get('end')
+                if end:
+                    return f"{start} to {end}"
+                return start
+            return ""
+        
+        elif prop_type == 'checkbox':
+            return "✓" if property_data['checkbox'] else "✗"
+        
+        elif prop_type == 'url':
+            return property_data['url'] if property_data['url'] else ""
+        
+        elif prop_type == 'email':
+            return property_data['email'] if property_data['email'] else ""
+        
+        elif prop_type == 'phone_number':
+            return property_data['phone_number'] if property_data['phone_number'] else ""
+        
+        elif prop_type == 'people':
+            if property_data['people']:
+                return ', '.join([person['name'] for person in property_data['people']])
+            return ""
+        
+        elif prop_type == 'files':
+            if property_data['files']:
+                return ', '.join([file['name'] for file in property_data['files']])
+            return ""
+        
+        elif prop_type == 'status':
+            return property_data['status']['name'] if property_data['status'] else ""
+        
+        elif prop_type == 'formula':
+            # Formula results can be different types
+            if property_data['formula']:
+                formula_type = property_data['formula']['type']
+                if formula_type == 'string':
+                    return property_data['formula']['string'] or ""
+                elif formula_type == 'number':
+                    return str(property_data['formula']['number']) if property_data['formula']['number'] is not None else ""
+                elif formula_type == 'boolean':
+                    return "✓" if property_data['formula']['boolean'] else "✗"
+                elif formula_type == 'date':
+                    if property_data['formula']['date']:
+                        return property_data['formula']['date']['start']
+            return ""
+        
+        elif prop_type == 'relation':
+            # For now, just return count of relations
+            if property_data['relation']:
+                return f"{len(property_data['relation'])} related items"
+            return ""
+        
+        elif prop_type == 'rollup':
+            # Rollup can contain various types
+            if property_data['rollup'] and property_data['rollup']['array']:
+                return f"{len(property_data['rollup']['array'])} items"
+            return ""
+        
+        else:
+            # For unsupported property types, try to extract basic info
+            return f"[{prop_type}]"
+    
+    def format_database_entry_properties(self, entry: Dict) -> str:
+        """Format all properties of a database entry as markdown"""
+        properties = entry['properties']
+        content = ""
+        
+        # Skip the title property as it's used as the main heading
+        for prop_name, prop_data in properties.items():
+            if prop_data['type'] == 'title':
+                continue  # Skip title as it's used as the heading
+            
+            value = self.extract_property_value(prop_data)
+            if value:  # Only include properties with values
+                content += f"**{prop_name}:** {value}\n\n"
+        
+        return content
+    
     def create_directory_structure(self, hierarchy: Dict, output_path: Path):
         """Create directory structure and sync content"""
         
@@ -325,11 +491,20 @@ class NotionSync:
         title = self.get_page_title(page)
         
         try:
+            # Start with title
+            markdown_content = f"# {title}\n\n"
+            
+            # If this is a database entry, include its properties
+            if page['object'] == 'page' and page['parent']['type'] == 'database_id':
+                properties_content = self.format_database_entry_properties(page)
+                if properties_content:
+                    markdown_content += properties_content
+            
+            # Get page content (blocks)
             content_data = self.get_page_content(page_id)
             blocks = content_data['results']
             
             # Convert blocks to markdown
-            markdown_content = f"# {title}\n\n"
             for block in blocks:
                 markdown_content += self.block_to_markdown(block)
             
@@ -359,12 +534,61 @@ class NotionSync:
             index_content += f"This database contains {len(entries)} entries.\n\n"
             
             if entries:
-                index_content += "## Entries\n\n"
+                # Get database schema to understand properties
+                db_properties = database.get('properties', {})
+                
+                # Create a table showing key properties for all entries
+                if len(entries) > 0:
+                    # Determine which properties to show in the table (limit to most important ones)
+                    key_properties = []
+                    for prop_name, prop_config in db_properties.items():
+                        if prop_config['type'] in ['title', 'rich_text', 'select', 'url', 'number', 'checkbox', 'date']:
+                            key_properties.append(prop_name)
+                        if len(key_properties) >= 4:  # Limit to 4 columns for readability
+                            break
+                    
+                    if key_properties:
+                        # Create table header
+                        header = "| " + " | ".join(key_properties) + " |\n"
+                        separator = "|" + "|".join([" --- " for _ in key_properties]) + "|\n"
+                        index_content += header + separator
+                        
+                        # Add table rows
+                        for entry in entries:
+                            row_values = []
+                            for prop_name in key_properties:
+                                if prop_name in entry['properties']:
+                                    value = self.extract_property_value(entry['properties'][prop_name])
+                                    # Truncate long values and escape pipes
+                                    value = value.replace('|', '\\|').replace('\n', ' ')[:50]
+                                    if len(value) > 47:
+                                        value = value[:47] + "..."
+                                    row_values.append(value or "-")
+                                else:
+                                    row_values.append("-")
+                            
+                            index_content += "| " + " | ".join(row_values) + " |\n"
+                        
+                        index_content += "\n"
+                
+                index_content += "## Individual Entries\n\n"
                 
                 for entry in entries:
                     entry_title = self.get_page_title(entry)
                     entry_filename = f"{self.sanitize_filename(entry_title)}.md"
-                    index_content += f"- [{entry_title}]({entry_filename})\n"
+                    
+                    # Add a brief preview of key properties
+                    preview = ""
+                    if 'Answer' in entry['properties']:
+                        answer_value = self.extract_property_value(entry['properties']['Answer'])
+                        if answer_value:
+                            preview = f" - {answer_value[:100]}{'...' if len(answer_value) > 100 else ''}"
+                    elif 'url' in entry['properties']:
+                        url_value = self.extract_property_value(entry['properties']['url'])
+                        if url_value:
+                            preview = f" - {url_value}"
+                    
+                    index_content += f"- [{entry_title}]({entry_filename}){preview}\n"
                     
                     # Sync individual entry
                     self.sync_page_hierarchical(entry, db_dir / entry_filename)

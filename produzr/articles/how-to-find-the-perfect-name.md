@@ -66,7 +66,11 @@ We use a framework called the Diamond Framework to force clarity on business, ma
 - What do we have to win?
 - What do we need to win?
 - What do we need to say?
+[Unsupported block type: image]
+
 This creates alignment on the role of the name versus other brand elements like design and messaging. Here are the results of the exercise we did while working with P&G to develop the Swiffer brand name.
+
+[Unsupported block type: image]
 
 **Quantity breeds quality.** Developing a brand name is a treasure hunt. You need to explore, and then explore again. And you need to explore in places where you think there may be no chance of finding the name. Naming is hard work. We recommend generating at least 1,000 creative ideas before selecting a shortlist of 50 to 100 candidates. (We usually generate thousands.)
 
