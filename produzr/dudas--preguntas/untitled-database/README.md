@@ -1,9 +1,11 @@
 # Untitled Database
 
-This database contains 27 entries.
+This database contains 29 entries.
 
 | Answer | Name |
 | --- | --- |
+| - | Client - buscar otro nombre para referirse a (c... |
+| - | Buscar nombre para “Featured profiles” |
 | - | A veces separan en tabs la parte del talent del... |
 |  No, siempre la misma | ¿Los riders se van intercambiando las vans o es... |
 | Solo shooting days | ¿Los job dates del estimate son todos o solo sh... |
@@ -34,6 +36,8 @@ This database contains 27 entries.
 
 ## Individual Entries
 
+- [Client - buscar otro nombre para referirse a (client, agency, prod co) en la parte de “crear proyecto”](client---buscar-otro-nombre-para-referirse-a-clien.md)
+- [Buscar nombre para “Featured profiles”](buscar-nombre-para-featured-profiles.md)
 - [A veces separan en tabs la parte del talent del resto. Esto es porque esta partida puede llegar a ser muy costosa y necesitar muchos cambios, y como producer no interesa que pueda influir en tirar atrás el proyecto. En principio podríamos habilitar la opción de exportar un budget con los campos que queramos (por ejemplo, dejando fuera talent, para exportarlo luego en un pdf independiente).. pero, tendría sentido (o sería necesario) poder gestionar 2 entidades separadas?](a-veces-separan-en-tabs-la-parte-del-talent-del-re.md)
 - [¿Los riders se van intercambiando las vans o están asignados de manera permanente?](los-riders-se-van-intercambiando-las-vans-o-están-.md) -  No, siempre la misma
 - [¿Los job dates del estimate son todos o solo shooting days?](los-job-dates-del-estimate-son-todos-o-solo-shooti.md) - Solo shooting days

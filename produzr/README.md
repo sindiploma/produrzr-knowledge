@@ -7,6 +7,8 @@
 - **🎨 Design:** [https://www.figma.com/design/TY5hIt4xmYoKeE17Gzqbl9/Produzr?m=auto&t=u1Kdp8bEJZCKFrV9-1](https://www.figma.com/design/TY5hIt4xmYoKeE17Gzqbl9/Produzr?m=auto&t=u1Kdp8bEJZCKFrV9-1)
 - **🧠 Diagrama de datos:** [https://www.tldraw.com/r/r1ITD4sP1RWgIkATZ-Ygm?d=v-2653.-1327.6833.4106.kEF5VJkluuvtrzLIASBal](https://www.tldraw.com/r/r1ITD4sP1RWgIkATZ-Ygm?d=v-2653.-1327.6833.4106.kEF5VJkluuvtrzLIASBal)
 - **📚 Drive:** [https://drive.google.com/drive/folders/1SYsww5uz5Ni5iqXYxi5u4AVQaWoQT-76?usp=drive_link](https://drive.google.com/drive/folders/1SYsww5uz5Ni5iqXYxi5u4AVQaWoQT-76?usp=drive_link)
+---
+
 ## Market
 
 [Unsupported block type: child_page]
@@ -255,6 +257,8 @@ Vista cliente del proyecto
 
 [Unsupported block type: child_database]
 
+---
+
 ## Audience
 
 [Unsupported block type: child_page]
@@ -306,6 +310,8 @@ La empresa local contratada por la “production company” para proporcionar lo
 
 1. [Transport Coordinator](https://www.notion.so/1424428135c38017b2d4c9fdc887e0f9) 
   [Unsupported block type: synced_block]
+
+---
 
 ## Strategy
 
@@ -605,6 +611,8 @@ For senior production professionals in high-end fashion and advertising who stru
 [Unsupported block type: child_page]
 
 - We hate spreadsheets as much as you do
+---
+
 ## Go-To-Market
 
 [Unsupported block type: child_page]
@@ -626,6 +634,8 @@ For senior production professionals in high-end fashion and advertising who stru
 [Unsupported block type: child_page]
 
 > ☝ Sales funnel stages, lead qualification criteria, sales materials, scripts, objection handling, and closing techniques.
+
+---
 
 ## Product
 
@@ -811,6 +821,8 @@ Crear una metodologia un standaerd. El storytelling es importante
 
 Hay que ser “experto en” de cara a la venta para credibilidad. “Yo lo hago asi”
 
+---
+
 ## Business
 
 [Unsupported block type: child_page]
@@ -824,6 +836,8 @@ Hay que ser “experto en” de cara a la venta para credibilidad. “Yo lo hago
 [Unsupported block type: child_page]
 
 > ☝ Terms of service, privacy policies, data protection requirements, industry regulations, intellectual property, and legal structure considerations.
+
+---
 
 ## Tech
 
@@ -1159,15 +1173,13 @@ ProjectRole → ProjectRoleNeeds (walkies, catering, transport)
 
 [Unsupported block type: bookmark]
 
-[Unsupported block type: child_page]
-
-[Unsupported block type: child_database]
-
-[Unsupported block type: child_page]
-
-[Unsupported block type: child_database]
+---
 
 ## Resources
+
+[Unsupported block type: child_page]
+
+[Unsupported block type: child_database]
 
 [Unsupported block type: child_page]
 
