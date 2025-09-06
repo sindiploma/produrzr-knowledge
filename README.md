@@ -51,33 +51,19 @@ produzr/                    # Main Produzr workspace
 ## Sync Process
 
 ### Manual Sync
-```bash
-# Navigate to knowledge-base directory
-cd knowledge-base
 
-# Run sync with your Notion token
+```bash
+# Run sync (reads token from .env automatically)
+python3 sync_notion.py
+
+# Still works with command line argument
 python3 sync_notion.py YOUR_NOTION_TOKEN
-
-# Commit and push changes
-git add .
-git commit -m "Updated from Notion - $(date)"
-git push origin main
-```
-
-### Automated Sync
-```bash
-# From main project root
-./scripts/sync-knowledge-base.sh YOUR_NOTION_TOKEN
-
-# Or set environment variable
-export NOTION_TOKEN=your_token_here
-./scripts/sync-knowledge-base.sh
 ```
 
 ## Content Types
 
 - **Individual pages** → `.md` files with page content
-- **Pages with children** → directories with `README.md` + child files/folders  
+- **Pages with children** → directories with `README.md` + child files/folders
 - **Notion databases** → directories with:
   - `README.md` - Database index with entry list
   - Individual `.md` files for each database entry
@@ -85,6 +71,7 @@ export NOTION_TOKEN=your_token_here
 ## Navigation
 
 The hierarchical structure makes it easy to:
+
 - Browse content following the same mental model as Notion
 - Find related content in the same directory
 - Understand parent-child relationships
